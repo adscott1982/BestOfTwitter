@@ -1,0 +1,15 @@
+*.suo
+*.user
+*.cache
+*.sdf
+*.opendb
+_ReSharper.*
+bin
+obj
+packages
+Visual Studio 2013
+Visual Studio 2015
+Debug
+ipch
+
+/artifacts

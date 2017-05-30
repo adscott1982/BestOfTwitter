@@ -1,0 +1,30 @@
+The idea is to evaluate tweets for how good they are based on the number of favourites / re-tweets.
+
+For instance someone like Donald Trump always gets thousands of favourites for every tweet, regardless of the genuine quality of the tweet. Hence the quality of a tweet cannot be effectively assessed looking at that metric alone.
+
+However an algorithm could be set such that the quality could be assessed based on a combination of factors.
+
+In its most simple form: 
+
+q = quality
+fa = favourites
+a = audience
+r = retweets
+fo = followers
+li = lifetime (age)
+
+q = fa / audience
+
+Explanation:
+
+favourites / audience - The number of times an item has been favourited is the base metric for quality. If the tweet only reached 100 people, but had 50 favourites, it indicates the quality is very high 50 / 100 = 0.5. If a Trump tweet had an audience of 1 million people, but only had 5000 favourites, it indicates worse quality - 5000 / 1000000 = 0.005.
+
+One problem is calculating the total audience. To get the true audience the follower count of every single re-tweeter must be combined into a single total. This also would not include any of those 'followers' which are not active users, or are bots. Additionally the total does not consider what proportion of views came from an external link. A twitter user could follow a link from a news article to a tweet, or be looking at tweets regarding a certain hashtag and favourite it, without being a follower. Perhaps it is possible to get the "view count" for any given tweet, and then use that as a metric.
+
+It is unclear at this stage what is available via the twitter API for searching random tweets. It is highly unlikely it is possible to search all tweets! Besides even doing that it would not be possible to run the algorithm on every single tweet.
+
+It is also quite likely there are usage limitations for the Twitter API itself. 
+
+One approach might be to get tweets against popular hashtags, and then perform the analysis on those.
+
+Another approach might be to look up the "most viewed" tweets if such an API function exists. Then walk through the tweets and perform the algorithm to judge quality. The downside of this approach is that it still means that gems that don't receive much exposure will continue to be missed, as they will surely not be provided as results from the "most viewed" tweets.
