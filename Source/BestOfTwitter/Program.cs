@@ -22,21 +22,32 @@ namespace BestOfTwitter
             if (auth == null)
                 auth = Authorize(path);
 
-            Console.WriteLine("Performing search of 'cats'...");
+            Console.WriteLine("Performing search...");
 
             using (var twitterCtx = new TwitterContext(auth))
             {
                 var srch = (from search in twitterCtx.Search
                             where search.Type == SearchType.Search &&
-                                  search.Query == "cats"
+                                  search.Query == "funny" &&
+                                  search.ResultType == ResultType.Popular &&
+                                  search.Count == 100 &&
+                                  search.SearchLanguage == "en" &&
+                                  search.Until <= DateTime.Now
                             select search)
                             .SingleOrDefaultAsync();
-                var results = srch.Result;
+                var results = srch.Result.Statuses.OrderByDescending(r => (double)r.FavoriteCount / r.User.FollowersCount).ToList();
 
-                results.Statuses.ForEach(entry =>
-                Console.WriteLine(
-                "ID: {0, -15}, Source: {1}\nContent: {2}\n",
-                entry.StatusID, entry.Source, entry.Text));
+                results.ForEach(entry =>
+                {
+                    Console.WriteLine("\n");
+                    Console.WriteLine($"ID: {entry.StatusID}");
+                    Console.WriteLine($"Time: {entry.CreatedAt}");
+                    Console.WriteLine($"User: {entry.User.Name}");
+                    Console.WriteLine($"Content: {entry.Text}");
+                    Console.WriteLine($"Favorites: {entry.FavoriteCount} / Followers: {entry.User.FollowersCount}");
+                    var rating = (double)entry.FavoriteCount / entry.User.FollowersCount;
+                    Console.WriteLine($"Popularity Rating: {rating:0.00 %}");
+                });
             }
 
             Console.ReadKey();
